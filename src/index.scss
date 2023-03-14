@@ -1,0 +1,59 @@
+@import './assets/theme/sb-admin-2.scss';
+
+@import './assets/fontawesome/scss/fontawesome.scss';
+// our project needs Solid + Brands
+@import "./assets/fontawesome/scss/solid.scss";
+@import "./assets/fontawesome/scss/brands.scss";
+
+body {
+    background-color: #f1f1f1;
+}
+
+.avatar-continer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background-color: rgb(237, 236, 230);
+    border: 1px solid rgb(194, 189, 185);
+    margin-right: 10px;
+}
+.initials {
+   font-weight: 900; 
+   font-size: 14px;
+   background-color: transparent;
+   margin: 0px;
+   color: rgb(51, 34, 18);
+}
+
+.btn-round {
+    border-radius: 20px;
+}
+.form-control-round {
+    border-radius: 20px;
+}
+
+.post-date {
+    margin: 0;
+    font-size: 13px;
+}
+
+.post-owner {
+    color: #000;
+    margin: 0;
+    font-weight: 700;
+}
+
+.link {
+    background: transparent;
+    padding: 0;
+    margin: 0;
+    border: 0;
+    cursor: pointer;
+}
+
+.fw-bold {
+    font-weight: 700;
+}

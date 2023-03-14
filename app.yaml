@@ -1,0 +1,35 @@
+runtime: python27
+api_version: 1
+threadsafe: true
+# service: app
+instance_class: F1
+
+handlers:
+  - url: /(.*\.(gif|png|jpg|css|js|eot|svg|ttf|woff|json|html|mp4)(|\.map))$
+    static_files: build/\1
+    upload: build/(.*)(|\.map)
+  - url: /(.*)
+    static_files: build/index.html
+    upload: build/index.html
+    secure: always
+    redirect_http_response_code: 301
+
+skip_files:
+  - ^(?!build)  # Skip any files not in the build folder
+  # - e2e/
+  # - node_modules/
+  # - src/
+  # - ^(.*/)?\..*$
+  # - ^(.*/)?.*\.json$
+  # - ^(.*/)?.*\.md$
+  # - ^(.*/)?.*\.yaml$
+  # - ^LICENSE
+
+automatic_scaling:
+  target_cpu_utilization: 0.8
+  target_throughput_utilization: 0.8
+  min_instances: 1
+  max_instances: 5
+  min_pending_latency: 15000ms #30ms  # default value
+  #max_pending_latency: 100ms
+  max_idle_instances: 1
