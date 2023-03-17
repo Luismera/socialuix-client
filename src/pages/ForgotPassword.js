@@ -1,7 +1,34 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React, { useState } from "react";
+import { useForm } from "react-hook-form";
+import { Link, useNavigate } from "react-router-dom";
+import launchToast from "../helpers/toastHelper";
+import { forgot } from "../services/userService";
 
 function ForgotPassword() {
+  let navigate = useNavigate();
+  const [isLoading, setIsLoading] = useState(false);
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
+
+  const onSubmit = async (data) => {
+    setIsLoading(true);
+    try {
+      await forgot(data);
+      navigate("/");
+      setIsLoading(false);
+      launchToast(
+        "Hemos enviado las instrucciones a tu correo electronico",
+        "success"
+      );
+    } catch (error) {
+      console.error("error :>> ", error);
+      launchToast(error.message, "error");
+      setIsLoading(false);
+    }
+  };
   return (
     <div className="container">
       <div className="row justify-content-center">
@@ -22,18 +49,36 @@ function ForgotPassword() {
                         enlace para restablecer su contraseña.
                       </p>
                     </div>
-                    <form className="user">
+                    <form className="user" onSubmit={handleSubmit(onSubmit)}>
                       <div className="form-group">
                         <input
                           type="email"
-                          className="form-control form-control-user"
-                          id="exampleInputEmail"
-                          aria-describedby="emailHelp"
-                          placeholder="Introducir correo electrónico..."
+                          placeholder="Correo electrónico"
+                          className={`form-control-user form-control ${
+                            errors.email ? "is-invalid" : ""
+                          }`}
+                          {...register("email", {
+                            required: "Este campo es requerido",
+                            pattern: {
+                              value:
+                                /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
+                              message:
+                                "¡Debe proporcionar una dirección de correo electrónico válida!",
+                            },
+                          })}
                         />
+                        {errors.email && (
+                          <span className="invalid-feedback">
+                            {errors.email.message}
+                          </span>
+                        )}
                       </div>
                       <button className="btn btn-primary btn-user btn-block">
-                        Restablecer la contraseña
+                        {isLoading ? (
+                          <div className="spinner-border spinner-border-sm" />
+                        ) : (
+                          "Restablecer la contraseña"
+                        )}
                       </button>
                     </form>
                     <hr />

@@ -1,11 +1,12 @@
-import React, { useState } from "react";
+import React from "react";
 import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
-import { userRegister } from "../services/userService";
+import launchToast from "../helpers/toastHelper";
+import { useAuth } from "../hooks/useAuth";
 
 function SignUp() {
   let navigate = useNavigate();
-  const [isLoading, setIsLoading] = useState(false);
+  const { register: registerUser, isLoading } = useAuth();
   const {
     register,
     handleSubmit,
@@ -13,14 +14,13 @@ function SignUp() {
   } = useForm();
 
   const onSubmit = async (data) => {
-    setIsLoading(true);
     try {
-      await userRegister(data);
-      navigate("/signin");
-      setIsLoading(false);
+      await registerUser(data);
+      navigate("/");
+      launchToast("Usuario creado exitosamente", "success");
     } catch (error) {
       console.error("error :>> ", error);
-      setIsLoading(false);
+      launchToast(error.message, "error");
     }
   };
   return (
@@ -38,29 +38,59 @@ function SignUp() {
                   <div className="form-group">
                     <input
                       type="text"
-                      className="form-control form-control-user"
-                      id="exampleFirstName"
                       placeholder="Nombre completo"
-                      {...register("name")}
+                      className={`form-control-user form-control ${
+                        errors.name ? "is-invalid" : ""
+                      }`}
+                      {...register("name", {
+                        required: "Este campo es requerido",
+                      })}
                     />
+                    {errors.name && (
+                      <span className="invalid-feedback">
+                        {errors.name.message}
+                      </span>
+                    )}
                   </div>
                   <div className="form-group">
                     <input
                       type="email"
-                      className="form-control form-control-user"
-                      id="exampleInputEmail"
                       placeholder="Correo electronico"
-                      {...register("email")}
+                      className={`form-control-user form-control ${
+                        errors.email ? "is-invalid" : ""
+                      }`}
+                      {...register("email", {
+                        required: "Este campo es requerido",
+                        pattern: {
+                          value:
+                            /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
+                          message:
+                            "¡Debe proporcionar una dirección de correo electrónico válida!",
+                        },
+                      })}
                     />
+                    {errors.email && (
+                      <span className="invalid-feedback">
+                        {errors.email.message}
+                      </span>
+                    )}
                   </div>
                   <div className="form-group">
                     <input
                       type="password"
-                      className="form-control form-control-user"
-                      id="exampleInputPassword"
                       placeholder="Contraseña"
-                      {...register("password")}
+                      className={`form-control-user form-control ${
+                        errors.password ? "is-invalid" : ""
+                      }`}
+                      {...register("password", {
+                        required: "Este campo es requerido",
+                      })}
                     />
+                    {errors.password && (
+                      <span className="invalid-feedback">
+                        {errors.password.message}
+                      </span>
+                    )}
                   </div>
                   <button className="btn btn-primary btn-user btn-block">
                     {isLoading ? (

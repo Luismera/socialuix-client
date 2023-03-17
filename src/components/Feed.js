@@ -14,7 +14,6 @@ function Feed() {
     const fetchData = async () => {
       try {
         const resp = await getFeeds();
-        console.log("resp :>> ", resp);
         setFeeds(resp);
       } catch (error) {}
     };
