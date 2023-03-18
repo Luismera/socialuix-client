@@ -8,9 +8,15 @@ function Dashboard() {
     <div className="container">
       <div className="row justify-content-center">
         <div className="col-xl-6 col-lg-6 col-md-6 my-5">
-          <button type="button" onClick={logout} className="btn btn-danger">
-            Cerrar sesion
-          </button>
+          <div className="d-flex justify-content-end">
+            <button
+              type="button"
+              onClick={logout}
+              className="btn btn-danger mb-3"
+            >
+              <i class="fa-solid fa-power-off"></i>
+            </button>
+          </div>
           <Feed />
         </div>
       </div>

@@ -2,14 +2,16 @@ import React, { useState } from "react";
 import { postCommentFeed } from "../services/feedService";
 import CommentForm from "./CommentForm";
 import UserAvatar from "./UserAvatar";
+import moment from "moment";
 
-function Comments({ feedId, comments }) {
+function Comments({ feedId, comments, setRefreshData }) {
   const [isLoading, setIsLoading] = useState(false);
   const [toogleComment, setToogleComment] = useState(false);
   const [responseComment, setResponseComment] = useState([]);
 
   const saveComment = async (data) => {
     setIsLoading(true);
+    setRefreshData(true);
     try {
       const body = {
         ...data,
@@ -19,6 +21,7 @@ function Comments({ feedId, comments }) {
       await postCommentFeed(body);
       setResponseComment([]);
       setIsLoading(false);
+      setRefreshData(false);
     } catch (error) {
       setIsLoading(false);
     }
@@ -70,8 +73,9 @@ const TreeNode = ({ node, ...props }) => {
       <UserAvatar name={node.user.name} />
       <div className="flex-fill">
         <p className="p-3 bg-light m-0">
-          <span className="fw-bold">{node.user.name}</span>
-          <br />
+          <div className="fw-bold mb-1">
+            {node.user.name} | {moment(node.createdAt).format("ll")}
+          </div>
           {node.content}
         </p>
         <button
