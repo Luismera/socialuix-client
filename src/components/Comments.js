@@ -31,7 +31,7 @@ function Comments({ feedId, comments, setRefreshData }) {
     <div>
       <button
         type="button"
-        className="link"
+        className="btn btn-light mb-3"
         onClick={() => setToogleComment(true)}
       >
         <i className="fa-regular fa-comment-dots"></i> Comentar
@@ -69,8 +69,8 @@ const TreeNode = ({ node, ...props }) => {
 
   const hasChild = node.children && node.children.length > 0 ? true : false;
   return (
-    <div className="d-flex">
-      <UserAvatar name={node.user.name} />
+    <div className="d-flex mb-3">
+      <UserAvatar name={node.user.name} size={38} />
       <div className="flex-fill">
         <p className="p-3 bg-light m-0">
           <div className="fw-bold mb-1">

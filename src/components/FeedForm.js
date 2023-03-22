@@ -31,13 +31,18 @@ function FeedForm({ isOpen, handlerClose, defaultData }) {
         launchToast("Publicaion creada exitosamente", "success");
       }
       setIsLoading(false);
-      reset();
+      reset({ content: "" });
       handlerClose();
     } catch (error) {
       console.error("error :>> ", error);
       launchToast(error.message, "error");
       setIsLoading(false);
     }
+  };
+
+  const onClose = () => {
+    reset({ content: "" });
+    handlerClose();
   };
 
   return (
@@ -55,7 +60,7 @@ function FeedForm({ isOpen, handlerClose, defaultData }) {
                     ? "Actualizar publicacion"
                     : "Crear publicacion"}
                 </h5>
-                <button type="button" className="link" onClick={handlerClose}>
+                <button type="button" className="link" onClick={onClose}>
                   <i className="fa-regular fa-close"></i>
                 </button>
               </div>
@@ -82,7 +87,7 @@ function FeedForm({ isOpen, handlerClose, defaultData }) {
                 <button
                   type="button"
                   className="btn btn-link"
-                  onClick={handlerClose}
+                  onClick={onClose}
                 >
                   Cancelar
                 </button>
